@@ -1,0 +1,36 @@
+name: Build and Push Docker Image
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+
+      - name: Set up image name and tag
+        id: vars
+        run: |
+          IMAGE_NAME=${{ secrets.DOCKER_USERNAME }}/$(echo "${{ github.repository }}" | awk -F'/' '{print $2}')
+          TAG=$(echo $GITHUB_SHA | cut -c1-7)
+          echo "IMAGE_NAME=$IMAGE_NAME" >> $GITHUB_OUTPUT
+          echo "TAG=$TAG" >> $GITHUB_OUTPUT
+
+      - name: Build Docker image
+        run: |
+          docker build -t ${{ steps.vars.outputs.IMAGE_NAME }}:${{ steps.vars.outputs.TAG }} .
+
+      - name: Push Docker image
+        run: |
+          docker push ${{ steps.vars.outputs.IMAGE_NAME }}:${{ steps.vars.outputs.TAG }}
