@@ -30,9 +30,9 @@ jobs:
 
       - name: Build Docker image
         run:  |
-            docker build -t ${{ steps.vars.outputs.IMAGE_NAME }}:${{ steps.vars.outputs.TAG }} \
-            -f ./PlayzoneBooking/PlayzoneBooking/Dockerfile \
-             PlayzoneBooking
+              docker build -t ${{ steps.vars.outputs.IMAGE_NAME }}:${{ steps.vars.outputs.TAG }} \
+              -f PlayzoneBooking/Dockerfile \
+              PlayzoneBooking
 
       - name: Push Docker image
         run: |
