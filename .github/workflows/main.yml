@@ -22,7 +22,8 @@ jobs:
       - name: Set up image name and tag
         id: vars
         run: |
-          IMAGE_NAME=${{ secrets.DOCKER_USERNAME }}/$(echo "${{ github.repository }}" | awk -F'/' '{print $2}')
+          REPO_NAME=$(echo "${{ github.repository }}" | awk -F'/' '{print tolower($2)}')
+          IMAGE_NAME="${{ secrets.DOCKER_USERNAME }}/$REPO_NAME"
           TAG=$(echo $GITHUB_SHA | cut -c1-7)
           echo "IMAGE_NAME=$IMAGE_NAME" >> $GITHUB_OUTPUT
           echo "TAG=$TAG" >> $GITHUB_OUTPUT
