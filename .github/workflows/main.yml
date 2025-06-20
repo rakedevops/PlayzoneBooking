@@ -3,8 +3,9 @@ name: Build and Push Docker Image
 on:
   push:
     branches:
-      - master
+      - master       # Triggers when there's a push to master
   workflow_dispatch:
+
 jobs:
   build-and-push:
     runs-on: ubuntu-latest
