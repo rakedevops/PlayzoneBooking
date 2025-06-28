@@ -4,6 +4,8 @@ on:
   push:
     branches:
       - master       # Triggers when there's a push to master
+    paths:
+      - '.github/workflows/main.yml'  
   workflow_dispatch:
 
 jobs:
